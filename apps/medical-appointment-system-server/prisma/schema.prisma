@@ -1,0 +1,73 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Doctor {
+  id              String           @id @default(cuid())
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  firstName       String?
+  lastName        String?
+  specialization  String?
+  email           String?
+  phoneNumber     String?
+  doctorSchedules DoctorSchedule[]
+}
+
+model DoctorSchedule {
+  id        String                       @id @default(cuid())
+  createdAt DateTime                     @default(now())
+  updatedAt DateTime                     @updatedAt
+  dayOfWeek EnumDoctorScheduleDayOfWeek?
+  startTime String?
+  endTime   String?
+  doctor    Doctor?                      @relation(fields: [doctorId], references: [id])
+  doctorId  String?
+}
+
+model Patient {
+  id           String        @id @default(cuid())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  email        String?
+  phoneNumber  String?
+  firstName    String?
+  lastName     String?
+  appointments Appointment[]
+}
+
+model Appointment {
+  id              String                 @id @default(cuid())
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  appointmentDate DateTime?
+  appointmentTime String?
+  status          EnumAppointmentStatus?
+  patient         Patient?               @relation(fields: [patientId], references: [id])
+  patientId       String?
+}
+
+model UserRole {
+  id        String            @id @default(cuid())
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  role      EnumUserRoleRole?
+  userId    String?
+}
+
+enum EnumDoctorScheduleDayOfWeek {
+  Option1
+}
+
+enum EnumAppointmentStatus {
+  Option1
+}
+
+enum EnumUserRoleRole {
+  Option1
+}
