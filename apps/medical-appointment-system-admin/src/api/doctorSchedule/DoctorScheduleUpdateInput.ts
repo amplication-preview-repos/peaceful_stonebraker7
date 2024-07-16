@@ -1,0 +1,8 @@
+import { DoctorWhereUniqueInput } from "../doctor/DoctorWhereUniqueInput";
+
+export type DoctorScheduleUpdateInput = {
+  dayOfWeek?: "Option1" | null;
+  startTime?: string | null;
+  endTime?: string | null;
+  doctor?: DoctorWhereUniqueInput | null;
+};
